@@ -7,6 +7,7 @@ library(rlang)
 library(stats)
 library(dplyr)
 
+
 setwd("~/Desktop/THESIS")
 
 data <- read.csv("morphometrics_mouseandhuman.csv")
@@ -42,13 +43,13 @@ plot(pca$x[,1], pca$x[,2])
 
 
 
-## make a scree plot
+##scree plot
 pca.var <- pca$sdev^2
 pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
 
 barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", ylab="Percent Variation")
 
-## now make a fancy looking plot that shows the PCs and the variation:
+
 
 
 pca.data <- data.frame(Sample=rownames(pca$x),
