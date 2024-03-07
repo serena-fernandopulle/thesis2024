@@ -1,0 +1,102 @@
+install.packages("stats")
+install.packages("dplyr")
+install.packages("rlang")
+
+library(tidyverse)
+library(rlang)
+library(stats)
+library(dplyr)
+
+setwd("~/Desktop/THESIS")
+
+data <- read.csv("morphometrics_mouseandhuman.csv")
+
+#removing the first column
+
+data <- data[,-1]
+
+
+#normalize data:
+
+data_normalized <- scale(data)
+head(data_normalized)
+
+#getting rid of the header
+
+#data <- data[-1,]
+
+## In this example, the data is in a matrix called
+## data.matrix
+## columns are individual samples (i.e. cells)
+## rows are measurements taken for all the samples (i.e. genes)
+## Just for the sake of the example, here's some made up data...
+
+
+pca <- prcomp(t(data_normalized), scale=TRUE) 
+
+## plot pc1 and pc2
+plot(pca$x[,1], pca$x[,2])
+
+#plot(pca$x[,1]*-1, pca$x[,2])
+
+
+
+
+## make a scree plot
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
+
+barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", ylab="Percent Variation")
+
+## now make a fancy looking plot that shows the PCs and the variation:
+
+
+pca.data <- data.frame(Sample=rownames(pca$x),
+                       X=pca$x[,1],
+                       Y=pca$x[,2])
+pca.data
+
+ggplot(data=pca.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", pca.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", pca.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("My PCA Graph")
+
+pca
+
+install.packages("corrr")
+library('corrr')
+install.packages("ggcorrplot")
+library(ggcorrplot)
+install.packages("factoextra")
+
+install.packages("FactoMineR")
+library("FactoMineR")
+
+install.packages("geomorph")
+library(geomorph)
+
+install.packages("ggrepel")
+library(ggrepel)
+
+install.packages("factoextra")
+library(factoextra)
+
+#normalizing the data
+data_normalized <- scale(data)
+head(data_normalized)
+
+corr_matrix <- cor(data_normalized)
+ggcorrplot(corr_matrix)
+
+
+
+data.pca <- princomp(corr_matrix)
+summary(data.pca)
+
+
+corr_matrix
+
+
+data.pca$loadings[, 1:3]
