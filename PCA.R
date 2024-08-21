@@ -8,32 +8,18 @@ library(stats)
 library(dplyr)
 
 
-setwd("~/Desktop/THESIS")
-
 data <- read.csv("morphometrics_mouseandhuman.csv")
 
-#removing the first column
+#remove first column if needed
 
 data <- data[,-1]
 
 
 #normalize data:
 
-data_normalized <- scale(data)
-head(data_normalized)
-
-#getting rid of the header
-
-#data <- data[-1,]
-
-## In this example, the data is in a matrix called
-## data.matrix
-## columns are individual samples (i.e. cells)
-## rows are measurements taken for all the samples (i.e. genes)
-## Just for the sake of the example, here's some made up data...
 
 
-pca <- prcomp(t(data_normalized), scale=TRUE) 
+pca <- prcomp(t(data), scale=TRUE) 
 
 ## plot pc1 and pc2
 plot(pca$x[,1], pca$x[,2])
@@ -62,7 +48,7 @@ ggplot(data=pca.data, aes(x=X, y=Y, label=Sample)) +
   xlab(paste("PC1 - ", pca.var.per[1], "%", sep="")) +
   ylab(paste("PC2 - ", pca.var.per[2], "%", sep="")) +
   theme_bw() +
-  ggtitle("My PCA Graph")
+  ggtitle("PCA Graph")
 
 pca
 
